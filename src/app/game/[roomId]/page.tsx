@@ -38,6 +38,9 @@ export default function GamePage({ params }: { params: Promise<{ roomId: string 
       setTimeout(() => setError(''), 3000);
     });
 
+    // Request current state in case we missed the initial broadcast
+    socket.emit('requestState', roomId);
+
     return () => {
       socket.off('gameState');
       socket.off('soundEffect');

@@ -13,17 +13,22 @@ interface Particle {
   opacity: number;
 }
 
+function seededRand(seed: number): number {
+  const x = Math.sin(seed + 1) * 10000;
+  return x - Math.floor(x);
+}
+
 function generateParticles(count: number): Particle[] {
   const p: Particle[] = [];
   for (let i = 0; i < count; i++) {
     p.push({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 1,
-      duration: Math.random() * 10 + 5,
-      delay: Math.random() * 5,
-      opacity: Math.random() * 0.5 + 0.1,
+      x: seededRand(i * 7 + 1) * 100,
+      y: seededRand(i * 13 + 2) * 100,
+      size: seededRand(i * 17 + 3) * 4 + 1,
+      duration: seededRand(i * 23 + 4) * 10 + 5,
+      delay: seededRand(i * 29 + 5) * 5,
+      opacity: seededRand(i * 31 + 6) * 0.5 + 0.1,
     });
   }
   return p;
@@ -119,16 +124,18 @@ function generateConfetti(): ConfettiPiece[] {
   for (let i = 0; i < 50; i++) {
     pieces.push({
       id: i,
-      x: Math.random() * 100,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * 360,
-      size: Math.random() * 8 + 4,
-      duration: Math.random() * 2 + 2,
-      delay: Math.random() * 1,
+      x: seededRand(i * 11 + 100) * 100,
+      color: colors[Math.floor(seededRand(i * 19 + 200) * colors.length)],
+      rotation: seededRand(i * 37 + 300) * 360,
+      size: seededRand(i * 43 + 400) * 8 + 4,
+      duration: seededRand(i * 53 + 500) * 2 + 2,
+      delay: seededRand(i * 61 + 600),
     });
   }
   return pieces;
 }
+
+export const Particles = FloatingParticles;
 
 export function Confetti({ active }: { active: boolean }) {
   const pieces = useMemo(() => (active ? generateConfetti() : []), [active]);

@@ -76,6 +76,7 @@ export interface ClientToServerEvents {
   skipMission: () => void;
   continueToNext: () => void;
   playAgain: () => void;
+  requestState: (roomId: string) => void;
 }
 
 // Socket events from server to client

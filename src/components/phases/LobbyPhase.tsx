@@ -6,7 +6,7 @@ import { FloatingParticles, CandleFlicker } from '../Particles';
 
 export function LobbyPhase({ state, onStart }: { state: GameState; onStart: () => void }) {
   const isHost = state.myId === state.hostId;
-  const canStart = state.players.length >= 4;
+  const canStart = state.players.length >= 3;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
@@ -74,7 +74,7 @@ export function LobbyPhase({ state, onStart }: { state: GameState; onStart: () =
                 : 'bg-white/10 text-white/30 cursor-not-allowed'
             }`}
           >
-            {canStart ? '⚔️ Begin the Game' : `Need ${4 - state.players.length} more players`}
+            {canStart ? '⚔️ Begin the Game' : `Need ${3 - state.players.length} more players`}
           </motion.button>
         )}
 

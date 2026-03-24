@@ -531,7 +531,7 @@ app.prepare().then(() => {
       if (!roomId) return;
       const game = games.get(roomId);
       if (!game || game.hostId !== socket.id) return;
-      if (game.players.size < 2) { socket.emit('error', 'Need at least 2 players'); return; }
+      if (game.players.size < 3) { socket.emit('error', 'Need at least 3 players to start'); return; }
 
       assignRoles(game);
       game.phase = 'roleReveal';
@@ -631,6 +631,21 @@ app.prepare().then(() => {
       if (!game || game.phase !== 'mission' || game.hostId !== socket.id) return;
       clearTimer(game);
       startRoundtable(game, io);
+    });
+
+    socket.on('requestState', (roomId: string) => {
+      const game = games.get(roomId.toUpperCase().trim());
+      if (!game) return;
+      const existingRoom = playerToRoom.get(socket.id);
+      if (existingRoom === roomId) {
+        // Player is already in this room, just resend state
+        try {
+          const state = buildGameState(game, socket.id);
+          socket.emit('gameState', state);
+        } catch {
+          // not in game
+        }
+      }
     });
 
     socket.on('playAgain', () => {
